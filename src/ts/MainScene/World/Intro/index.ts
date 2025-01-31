@@ -102,7 +102,7 @@ export class Intro extends EventEmitter {
 
 			this.animator.animate( 'introLightIntensity', 1, 10 );
 
-		} );
+		});
 
 		/*-------------------------------
 			Text1

@@ -40,13 +40,13 @@ export class Comrade {
 			Texture
 		-------------------------------*/
 
-		let loader = new THREE.TextureLoader();
+		// let loader = new THREE.TextureLoader();
 
-		loader.load( './assets/textures/baku/baku_' + colorNum + '.jpg', ( tex ) => {
+		// loader.load( './assets/textures/baku/baku_' + colorNum + '.jpg', ( tex ) => {
 
-			this.commonUniforms.uTex.value = tex;
+		// 	this.commonUniforms.uTex.value = tex;
 
-		} );
+		// } );
 
 		/*-------------------------------
 			Animtor
