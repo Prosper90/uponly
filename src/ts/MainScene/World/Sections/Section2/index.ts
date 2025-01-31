@@ -68,6 +68,8 @@ export class Section2 extends Section {
 		this.title = new Section2Title( scene.getObjectByName( 'Title' ) as THREE.Mesh, this.commonUniforms );
 		this.title.switchVisibility( this.sectionVisibility );
 
+
+
 		/*-------------------------------
 			Transparent
 		-------------------------------*/

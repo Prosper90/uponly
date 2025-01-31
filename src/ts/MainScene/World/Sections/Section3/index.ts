@@ -91,11 +91,27 @@ export class Section3 extends Section {
 			Particle
 		-------------------------------*/
 
-		let baku = this.getObjectByName( 'Baku' )!;
+		/*-------------------------------
+			Ground
+		-------------------------------*/
+
+		// let ground = this.getObjectByName( 'Displays' ) as THREE.Mesh<any, THREE.MeshStandardMaterial>;
+
+		/*-------------------------------
+			Get Baku
+		-------------------------------*/
+		// console.log(ground, "trying to get ground");
+		
+		let baku = this.getObjectByName( 'Baku' );
+		// if(baku) {
+		// 	ground.add(baku);		
+		// }
 
 		this.particle = new Sec3Particle( this.commonUniforms );
 		this.particle.switchVisibility( this.sectionVisibility );
-		this.particle.position.copy( baku.position );
+		if(baku) {
+			this.particle.position.copy( baku.position );
+		}
 		this.particle.position.y += 2.8;
 
 		this.add( this.particle );

@@ -101,38 +101,43 @@ export class Baku extends THREE.Object3D {
         });
     }
 
-    private loadModel() {
-        const loader = new GLTFLoader(this.manager);
-        loader.load('./assets/scene/SM_Character_Final.glb', (gltf) => {
-            this.bakuWrap = gltf.scene.getObjectByName("Main_Rig") as THREE.Object3D;
+		private loadModel() {
+			const loader = new GLTFLoader(this.manager);
+			loader.load('./assets/scene/SM_Character_Final.glb', (gltf) => {
+				this.bakuWrap = gltf.scene.getObjectByName("Main_Rig") as THREE.Object3D;
 
-			// Scale down the model
-			this.bakuWrap.scale.set(0.3, 0.3, 0.3);
+				// Scale down the model
+				this.bakuWrap.scale.set(0.3, 0.3, 0.3);
 
-			// Center the model
-			const box = new THREE.Box3().setFromObject(this.bakuWrap);
-			const center = box.getCenter(new THREE.Vector3());
-			
-			this.bakuWrap.position.x = -center.x;
-			this.bakuWrap.position.y = -center.y;
-			this.bakuWrap.position.z = -center.z;
+				// Center the model
+				const box = new THREE.Box3().setFromObject(this.bakuWrap);
+				const center = box.getCenter(new THREE.Vector3());
+				
+				this.bakuWrap.position.x = -center.x;
+				this.bakuWrap.position.y = -center.y;
+				this.bakuWrap.position.z = -center.z;
 
-			// Adjust the vertical position if needed
-			this.bakuWrap.position.y -= 0;
+				// Adjust the vertical position if needed
+				this.bakuWrap.position.y -= 0;
 
-			console.log(this.bakuWrap.position, "checking the position");
+				// console.log(this.bakuWrap.position, "checking the position");
+				// console.log({
+				// 	x: THREE.MathUtils.radToDeg(this.bakuWrap.rotation.x),
+				// 	y: THREE.MathUtils.radToDeg(this.bakuWrap.rotation.y),
+				// 	z: THREE.MathUtils.radToDeg(this.bakuWrap.rotation.z)
+				// }, "Checking the rotation (Degrees)");
 
-            if (this.bakuWrap) {
-                this.container.add(this.bakuWrap);
-                this.setupMeshes(this.bakuWrap);
-                this.setupAnimations(gltf.animations);
-            }
+				if (this.bakuWrap) {
+					this.container.add(this.bakuWrap);
+					this.setupMeshes(this.bakuWrap);
+					this.setupAnimations(gltf.animations);
+				}
 
-            if (this.onLoaded) {
-                this.onLoaded();
-            }
-        });
-    }
+				if (this.onLoaded) {
+					this.onLoaded();
+				}
+			});
+		}
 
     private setupMeshes(bakuWrap: THREE.Object3D) {
         const mainMesh = bakuWrap.getObjectByName('Character') as THREE.Mesh;
@@ -324,24 +329,43 @@ export class Baku extends THREE.Object3D {
         this.commonUniforms.winResolution.value.copy(info.size.canvasPixelSize);
     }
 
-	public changeAngleandPosition(rotation?:[number, 'x' | 'y' | 'z'], position?: [number, number, number]) {
+
+	public resetToInitialPosition(sectionName: string) {
+		if (!this.bakuWrap) return;
+
+		if(sectionName == 'section_2' || sectionName == 'section_6') return;
+
+		// Reset rotation properly
+		this.bakuWrap.rotation.set(0, 0, 0);
+		this.bakuWrap.updateMatrix();
+	
+		// Reset position
+		this.bakuWrap.position.set(0, -0.34057440161705016, -0.010594895482063285);
+	}
+
+	public changeAngleandPosition(
+		rotations?: (['x' | 'y' | 'z', number])[], // Array of axis-angle pairs
+		position?: [number, number, number]) 
+	{
 		if (!this.bakuWrap) return;
 	
-	if(rotation ) {
-		// Rotate the model
-		const axisVector = new THREE.Vector3(
-			rotation[1] === 'x' ? 1 : 0,
-			rotation[1] === 'y' ? 1 : 0,
-			rotation[1] === 'z' ? 1 : 0
-		).normalize();
-
-			this.bakuWrap.setRotationFromAxisAngle(axisVector, THREE.MathUtils.degToRad(rotation[0]));
+		if (rotations) {
+			rotations.forEach(([axis, angle]) => {
+				const axisVector = new THREE.Vector3(
+					axis === 'x' ? 1 : 0,
+					axis === 'y' ? 1 : 0,
+					axis === 'z' ? 1 : 0
+				).normalize();
+	           
+				if(this.bakuWrap)
+				this.bakuWrap.setRotationFromAxisAngle(axisVector, THREE.MathUtils.degToRad(angle));
+			});
 		}
 	
 		// Move the model
 		if(position) {
 			this.bakuWrap.position.set(position[0], position[1], position[2]);
 		}
-		console.log(this.bakuWrap.position, "checking the position two update");
+		// console.log(this.bakuWrap.position, "checking the position two update");
 	}
 }
