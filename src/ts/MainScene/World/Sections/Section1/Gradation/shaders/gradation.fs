@@ -1,12 +1,13 @@
-uniform float time;
-varying vec2 vUv;
+precision mediump float;
 
-#pragma glslify: hsv2rgb = require('./hsv2rgb.glsl' )
-#pragma glslify: random = require('./random.glsl' )
+uniform float num; // Existing uniform
+uniform float uVisibility; // Visibility control
 
-void main( void ) {
+void main() {
+    float t = num; // Assuming 'num' is used for gradient interpolation
 
-	vec3 color = hsv2rgb( vec3( -vUv.x * 0.2 + 0.3 + time * 0.1 + random( gl_FragCoord.xy * 0.01 ) * 0.02, 0.95, 1.0  ) );
-	gl_FragColor = vec4( color, 1.0 );
+    // Interpolate between green (0,1,0) and yellow (1,1,0)
+    vec3 color = mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.0), t);
 
+    gl_FragColor = vec4(color, uVisibility);
 }

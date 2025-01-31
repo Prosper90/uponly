@@ -7,10 +7,10 @@ import { Section, ViewingState } from '../Section';
 import { Wall } from './Wall';
 import { BakuCollision } from './BakuCollision';
 import { Logo } from './Logo';
-import { Crosses } from './Crosses';
+// import { Crosses } from './Crosses';
 import { Gradation } from './Gradation';
 import { Lines } from './Lines';
-import { Slashes } from './Slashes';
+// import { Slashes } from './Slashes';
 import { Dots } from './Dots';
 
 export class Section1 extends Section {
@@ -25,10 +25,10 @@ export class Section1 extends Section {
 
 	public wall: Wall;
 	private logo?: Logo;
-	private crosses?: Crosses;
+	// private crosses?: Crosses;
 	private gradation?: Gradation;
 	private lines?: Lines;
-	private slashes?: Slashes;
+	// private slashes?: Slashes;
 	private dots?: Dots;
 
 	// layout
@@ -137,18 +137,18 @@ export class Section1 extends Section {
 			crosses
 		-------------------------------*/
 
-		this.crosses = new Crosses( this.getObjectByName( 'Crosses' ) as THREE.Object3D, this.commonUniforms );
-		this.crosses.switchVisibility( this.sectionVisibility );
+		// this.crosses = new Crosses( this.getObjectByName( 'Crosses' ) as THREE.Object3D, this.commonUniforms );
+		// this.crosses.switchVisibility( this.sectionVisibility );
 
-		this.layoutControllerList.push( new ORE.LayoutController( this.crosses.root.getObjectByName( 'Cross_Right' )!, {
-			position: new THREE.Vector3( - 0.3, 0.4, 0.0 ),
-			scale: 0.8
-		} ) );
+		// this.layoutControllerList.push( new ORE.LayoutController( this.crosses.root.getObjectByName( 'Cross_Right' )!, {
+		// 	position: new THREE.Vector3( - 0.3, 0.4, 0.0 ),
+		// 	scale: 0.8
+		// } ) );
 
-		this.layoutControllerList.push( new ORE.LayoutController( this.crosses.root.getObjectByName( 'Cross_Left' )!, {
-			position: new THREE.Vector3( 0.4, - 0.6, 0.0 ),
-			scale: 0.8
-		} ) );
+		// this.layoutControllerList.push( new ORE.LayoutController( this.crosses.root.getObjectByName( 'Cross_Left' )!, {
+		// 	position: new THREE.Vector3( 0.4, - 0.6, 0.0 ),
+		// 	scale: 0.8
+		// } ) );
 
 		/*-------------------------------
 			Gradations
@@ -185,8 +185,8 @@ export class Section1 extends Section {
 			Slash
 		-------------------------------*/
 
-		this.slashes = new Slashes( this.getObjectByName( 'Slashes' ) as THREE.Object3D, this.commonUniforms );
-		this.slashes.switchVisibility( this.sectionVisibility );
+		// this.slashes = new Slashes( this.getObjectByName( 'Slashes' ) as THREE.Object3D, this.commonUniforms );
+		// this.slashes.switchVisibility( this.sectionVisibility );
 
 		/*-------------------------------
 			Dots
@@ -317,8 +317,8 @@ export class Section1 extends Section {
 		if ( this.logo ) this.logo.switchVisibility( this.sectionVisibility );
 		if ( this.gradation ) this.gradation.switchVisibility( this.sectionVisibility );
 		if ( this.lines ) this.lines.switchVisibility( viewing );
-		if ( this.slashes ) this.slashes.switchVisibility( this.sectionVisibility );
-		if ( this.crosses ) this.crosses.switchVisibility( this.sectionVisibility );
+		// if ( this.slashes ) this.slashes.switchVisibility( this.sectionVisibility );
+		// if ( this.crosses ) this.crosses.switchVisibility( this.sectionVisibility );
 		if ( this.dots ) this.dots.switchVisibility( this.sectionVisibility );
 
 	}

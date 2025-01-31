@@ -11,8 +11,7 @@ export class BG extends THREE.Mesh {
 
 	constructor( parentUniforms: ORE.Uniforms ) {
 
-		let uni = ORE.UniformsLib.mergeUniforms( parentUniforms, {
-		} );
+		let uni = ORE.UniformsLib.mergeUniforms( parentUniforms, {} );
 
 		/*-------------------------------
 			Animator

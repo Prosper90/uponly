@@ -27,8 +27,7 @@ export class LogoPart {
 		this.offset = offset;
 		this.time -= this.offset * 5.0;
 
-		this.commonUniforms = ORE.UniformsLib.mergeUniforms( parentUniforms, {
-		} );
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( parentUniforms, {} );
 
 		this.mesh = mesh;
 		let baseMaterial = mesh.material as THREE.MeshStandardMaterial;
@@ -43,7 +42,12 @@ export class LogoPart {
 				uMatCapTex: window.gManager.assetManager.getTex( 'matCap' ),
 				num: {
 					value: 1.0 - this.offset
-				}
+				},
+				// New PBR-related uniforms
+				uMetalness: { value: 0.7 },    // Adjust for metallic look
+				uRoughness: { value: 0.2 },    // Lower = smoother
+				uGlossiness: { value: 0.8 },   // Higher = shinier
+				uReflection: { value: 0.6 },   // Higher = more reflective
 			} ),
 			side: THREE.DoubleSide
 		} );
@@ -55,6 +59,30 @@ export class LogoPart {
 		this.transformedWorldPosition = this.mesh.getWorldPosition( new THREE.Vector3() );
 		this.velocity = new THREE.Vector3();
 
+	}
+
+
+	// Method to update material properties
+	public updateMaterialProperties(properties: {
+		metalness?: number;
+		roughness?: number;
+		glossiness?: number;
+		reflection?: number;
+	}) {
+		const material = this.mesh.material as THREE.ShaderMaterial;
+		
+		if (properties.metalness !== undefined) {
+			material.uniforms.uMetalness.value = properties.metalness;
+		}
+		if (properties.roughness !== undefined) {
+			material.uniforms.uRoughness.value = properties.roughness;
+		}
+		if (properties.glossiness !== undefined) {
+			material.uniforms.uGlossiness.value = properties.glossiness;
+		}
+		if (properties.reflection !== undefined) {
+			material.uniforms.uReflection.value = properties.reflection;
+		}
 	}
 
 

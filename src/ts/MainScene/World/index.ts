@@ -166,10 +166,33 @@ export class World extends THREE.Object3D {
 
 		window.setInterval( () => {
 
-			if ( this.section4.sectionVisibility ) {
+			if(this.section1.sectionVisibility) {
+				
+				this.baku.changeSectionAction('section_1');
 
-				this.baku.jump();
+			} else if ( this.section2.sectionVisibility ) {
 
+				this.baku.changeSectionAction('section_2');
+
+			} else if ( this.section3.sectionVisibility ) {
+
+				// this.baku.changeSectionAction('section_3', '04_ToHero');
+				this.baku.changeSectionAction('section_3');
+				// this.baku.changeAngleandPosition([-60, 'x'], [0, -0.5, 0]);
+
+			} else if ( this.section4.sectionVisibility ) {
+
+				// this.baku.changeSectionAction('section_4', '04R_ToHero');
+				this.baku.changeSectionAction('section_4');
+
+			} else if ( this.section5.sectionVisibility ) {
+
+				// this.baku.changeSectionAction('section_5', '09_ToFly');
+				this.baku.changeSectionAction('section_5');
+
+			} else if ( this.section6.sectionVisibility ) {
+
+				this.baku.changeSectionAction('section_6');
 			}
 
 		}, 3500 );
@@ -182,7 +205,7 @@ export class World extends THREE.Object3D {
 
 		if ( ! window.isSP ) {
 
-			this.trail = new DrawTrail( renderer, trailAssets, this.commonUniforms );
+			this.trail = new DrawTrail( renderer, trailAssets, this.commonUniforms, this.manager );
 			this.trail.position.set( 0, 0, 0 );
 			this.trail.frustumCulled = false;
 			this.add( this.trail );

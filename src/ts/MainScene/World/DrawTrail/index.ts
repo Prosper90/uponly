@@ -7,6 +7,7 @@ import drawTrailFrag from './shaders/drawTrail.fs';
 import computePosition from './shaders/trailComputePosition.glsl';
 import { Pencil } from './Pencil';
 import { Sec1Pointer } from './Sec1Pointer';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 declare interface Kernels{
     position: ORE.GPUComputationKernel
@@ -33,6 +34,9 @@ export class DrawTrail extends THREE.Mesh {
 	private kernels: Kernels;
 	private datas: Datas;
 
+	//new detail
+	private manager: THREE.LoadingManager = new THREE.LoadingManager();
+
 	// state
 
 	private cursorPos: THREE.Vector3 = new THREE.Vector3();
@@ -44,9 +48,9 @@ export class DrawTrail extends THREE.Mesh {
 
 	private childrenWrapper: THREE.Object3D;
 	private pencil: Pencil;
-	private pointer: Sec1Pointer;
+	private pointer: Sec1Pointer | null = null;
 
-	constructor( renderer: THREE.WebGLRenderer, assets: THREE.Object3D, parentUniforms: ORE.Uniforms ) {
+	constructor( renderer: THREE.WebGLRenderer, assets: THREE.Object3D, parentUniforms: ORE.Uniforms, manager?: THREE.LoadingManager) {
 
 		let radialSegments = 9;
 		let heightSegments = 128;
@@ -107,6 +111,8 @@ export class DrawTrail extends THREE.Mesh {
 
 		super( geo, mat );
 
+		this.manager = manager ?? new THREE.LoadingManager();
+
 		this.assets = assets;
 
 		this.castShadow = true;
@@ -166,9 +172,12 @@ export class DrawTrail extends THREE.Mesh {
 		this.pencil = new Pencil( this.commonUniforms );
 		this.pencil.position.y = 0.1;
 		this.childrenWrapper.add( this.pencil );
-
-		this.pointer = new Sec1Pointer( this.assets.getObjectByName( 'Rocket' ) as THREE.Mesh, this.commonUniforms );
-		this.childrenWrapper.add( this.pointer.mesh );
+        
+		const loader = new GLTFLoader(this.manager);
+		loader.load('./assets/scene/SM_Candle_Jump.glb', (gltf) => {
+			this.pointer = new Sec1Pointer( gltf.scene.getObjectByName( 'Candle' ) as THREE.Mesh, this.commonUniforms );
+			this.childrenWrapper.add( this.pointer.mesh );
+		})
 
 	}
 
@@ -202,6 +211,7 @@ export class DrawTrail extends THREE.Mesh {
 		// pointer
 		let diffVec2 = new THREE.Vector2( diff.x, diff.y );
 		this.pointerDirection.lerp( diffVec2, Math.min( 1.0, diffVec2.length() * 10.0 ) );
+		if(this.pointer)
 		this.pointer.mesh.rotation.z = Math.atan2( this.pointerDirection.y, this.pointerDirection.x ) - Math.PI / 2;
 
 	}
