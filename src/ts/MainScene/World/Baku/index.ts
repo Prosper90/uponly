@@ -131,6 +131,7 @@ export class Baku extends THREE.Object3D {
 					this.container.add(this.bakuWrap);
 					this.setupMeshes(this.bakuWrap);
 					this.setupAnimations(gltf.animations);
+					this.changeSectionAction('section_1');
 				}
 
 				if (this.onLoaded) {
