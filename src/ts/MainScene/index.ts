@@ -76,7 +76,7 @@ export class MainScene extends ORE.BaseLayer {
 
 				let section = this.world.changeSection( sectionIndex );
 
-				this.subtitles.changeSection( sectionIndex );
+				// this.subtitles.changeSection( sectionIndex );
 
 				if ( this.cameraController ) this.cameraController.changeRange( section.cameraRange );
 

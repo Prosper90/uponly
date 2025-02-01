@@ -112,7 +112,7 @@ export class Section3 extends Section {
 		if(baku) {
 			this.particle.position.copy( baku.position );
 		}
-		this.particle.position.y += 2.8;
+		this.particle.position.y -= 2.8;
 
 		this.add( this.particle );
 

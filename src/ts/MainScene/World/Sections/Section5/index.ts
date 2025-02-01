@@ -3,13 +3,13 @@ import * as ORE from 'ore-three';
 
 import { Section, ViewingState } from '../Section';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
-import { TextRing } from './TextRing';
+// import { TextRing } from './TextRing';
 import { Grid } from './Grid';
 import { Outro } from './Outro';
 
 export class Section5 extends Section {
 
-	private textring: TextRing;
+	// private textring: TextRing;
 	private grid: Grid;
 	private outro: Outro;
 
@@ -51,8 +51,8 @@ export class Section5 extends Section {
 			TextRing
 		-------------------------------*/
 
-		this.textring = new TextRing( this.commonUniforms );
-		this.textring.switchVisibility( this.sectionVisibility );
+		// this.textring = new TextRing( this.commonUniforms );
+		// this.textring.switchVisibility( this.sectionVisibility );
 
 		/*-------------------------------
 			Grid
@@ -81,7 +81,7 @@ export class Section5 extends Section {
 
 		// textring
 
-		baku.add( this.textring );
+		// baku.add( this.textring );
 
 		// grid
 
@@ -113,7 +113,7 @@ export class Section5 extends Section {
 
 		super.switchViewingState( viewing );
 
-		this.textring.switchVisibility( this.sectionVisibility );
+		// this.textring.switchVisibility( this.sectionVisibility );
 		this.grid.switchVisibility( this.sectionVisibility );
 
 		if ( this.outroTextTimer ) {
@@ -123,12 +123,12 @@ export class Section5 extends Section {
 
 		}
 
-		this.outroTextTimer = window.setTimeout( () => {
+		// this.outroTextTimer = window.setTimeout( () => {
 
-			this.outro.switchVisibility( this.sectionVisibility );
-			this.outroTextTimer = null;
+		// 	this.outro.switchVisibility( this.sectionVisibility );
+		// 	this.outroTextTimer = null;
 
-		}, this.sectionVisibility ? 100 : 0 );
+		// }, this.sectionVisibility ? 100 : 0 );
 
 	}
 

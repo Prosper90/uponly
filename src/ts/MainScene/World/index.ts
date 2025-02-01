@@ -173,9 +173,10 @@ export class World extends THREE.Object3D {
 				// Reset to default position and rotation
 		
 			} else if ( this.section3.sectionVisibility ) {
-				this.baku.changeAngleandPosition([['x', 37]], [0, -0.5, 0]);
-				this.baku.changeSectionAction('section_3');
-		
+				console.log('Section 3 slow');
+				
+				// this.baku.changeSectionAction('section_3');
+		        // this.baku.changeAngleandPosition([['x', 39]], [0, -0.6, 0]);
 			} else if ( this.section4.sectionVisibility ) {
 				this.baku.changeSectionAction('section_4');
 				// Reset to default position and rotation
@@ -201,7 +202,7 @@ export class World extends THREE.Object3D {
 
 		if ( ! window.isSP ) {
 
-			this.trail = new DrawTrail( renderer, trailAssets, this.commonUniforms, this.manager );
+			this.trail = new DrawTrail( renderer, trailAssets, this.commonUniforms );
 			this.trail.position.set( 0, 0, 0 );
 			this.trail.frustumCulled = false;
 			this.add( this.trail );
@@ -319,7 +320,18 @@ export class World extends THREE.Object3D {
 
 		this.baku.changeRotateSpeed( section.bakuParam.rotateSpeed );
 		this.baku.changeMaterial( section.bakuParam.materialType );
-		this.baku.changeSectionAction( section.sectionName );
+
+		// if(section.sectionName === 'section_3') {
+		// 	console.log('Section fast');
+		// 	this.baku.changeSectionAction('section_3', '03_Floating');
+		// 	this.baku.changeAngleandPosition([['x', 37]], [0, -0.5, 0]);
+		// } 
+		if(section.sectionName === 'section_3') {
+			this.baku.changeSectionAction( section.sectionName, 'pre_section_3');
+		  } else {
+			this.baku.changeSectionAction( section.sectionName );
+		}
+		
 		
 		this.baku.resetToInitialPosition(section.sectionName);
 		

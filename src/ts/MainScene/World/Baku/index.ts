@@ -38,7 +38,8 @@ export class Baku extends THREE.Object3D {
         'section_3': '05_Hero',
         'section_4': '07_Idle',
         'section_5': '03_Floating',
-        'section_6': '10_Flying'
+        'section_6': '10_Flying',
+		'pre_section_3': '03_Floating',
     };
 
     constructor(manager: THREE.LoadingManager, parentUniforms: ORE.Uniforms) {
@@ -211,13 +212,70 @@ export class Baku extends THREE.Object3D {
         }
     }
 
-	public changeSectionAction(sectionName: string) {
-		const animationName = this.SECTION_ANIMATIONS[sectionName];
-		if (!animationName || !this.animationActions[animationName]) return;
+
+	public changeSectionAction(sectionName: string, pre?: string) {
+		console.log(sectionName, "checking sectionName");
+	
+		const animationName = pre ? this.SECTION_ANIMATIONS[pre] : this.SECTION_ANIMATIONS[sectionName];
+		if (!animationName || !this.animationActions[animationName]) {
+			console.error(`Animation not found: ${animationName}`);
+			return;
+		}
+	
+		console.log(animationName, "checking to use");
 	
 		const action = this.animationActions[animationName];
 		const lastSectionAction = this.playingSectionAction;
 		this.playingSectionAction = action;
+	
+		// If there's a pre-animation specified
+		if (sectionName === 'section_3' && pre === 'pre_section_3') {
+			console.log("Starting floating animation hhhj");
+
+
+
+			this.animationClipNameList.forEach(name => {
+				if (name !== animationName && name !== lastSectionAction?.getClip().name) {
+					const otherAction = this.animationActions[name];
+					if (otherAction.isRunning()) {
+						otherAction.stop();
+					}
+				}
+		
+				this.animator.animate(
+					'BakuWeight/' + name,
+					name === animationName ? 1 : 0,
+					1.0, // Adjust this value for smoother weight transition
+					() => {
+						if (name !== animationName && this.animationActions[name].isRunning()) {
+							this.animationActions[name].stop();
+						}
+					}
+				);
+			});			
+
+	
+			// Reset and play the floating animation
+			action.reset()
+				.setEffectiveTimeScale(1)
+				.setEffectiveWeight(1)
+				.play();
+	
+			// Calculate the exact duration in milliseconds
+			const duration = action.getClip().duration * 500; // Use 1000 for normal duration
+	
+			// Use setTimeout to trigger the walking animation after floating completes
+			setTimeout(() => {
+				action.stop();
+				console.log("Transitioning to walking animation");
+	
+				// Trigger the walking animation
+				// this.changeAngleandPosition([['x', 39]], [0, -0.6, 0]);
+				this.changeSectionAction(sectionName);
+			}, duration);
+	
+			return; // Exit early as we'll handle the main animation after the timeout
+		}
 	
 		// If there's a previous animation playing
 		if (lastSectionAction && lastSectionAction !== action) {
@@ -225,11 +283,11 @@ export class Baku extends THREE.Object3D {
 			const currentTime = lastSectionAction.time;
 			const duration = lastSectionAction.getClip().duration;
 			const phase = currentTime / duration;
-			
+	
 			// Set the new animation to the same relative point
 			const newDuration = action.getClip().duration;
 			action.time = phase * newDuration;
-			
+	
 			// Enable smooth crossfading
 			action.reset()
 				.setEffectiveTimeScale(1)
@@ -237,7 +295,7 @@ export class Baku extends THREE.Object3D {
 				.play();
 	
 			// Crossfade duration in seconds
-			const crossFadeDuration = 0.5;
+			const crossFadeDuration = 1.0; // Adjust this value for smoother transition
 	
 			// Perform the crossfade
 			action.crossFadeFrom(lastSectionAction, crossFadeDuration, true);
@@ -257,11 +315,11 @@ export class Baku extends THREE.Object3D {
 					otherAction.stop();
 				}
 			}
-			
+	
 			this.animator.animate(
 				'BakuWeight/' + name,
 				name === animationName ? 1 : 0,
-				0.5, // Shorter duration for weight transition
+				1.0, // Adjust this value for smoother weight transition
 				() => {
 					if (name !== animationName && this.animationActions[name].isRunning()) {
 						this.animationActions[name].stop();
