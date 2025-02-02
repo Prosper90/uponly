@@ -39,15 +39,16 @@ export class LogoPart {
 				uColor: {
 					value: baseMaterial.emissive.convertLinearToSRGB()
 				},
+				uLightPosition: { value: new THREE.Vector3(5, 5, 5) }, // Adjust as needed
+				uCameraPosition: { value: new THREE.Vector3() },
+				uMetalness: { value: 0.7 },
+				uRoughness: { value: 0.2 },
+				uGlossiness: { value: 0.8 },
+				uReflection: { value: 0.6 },
 				uMatCapTex: window.gManager.assetManager.getTex( 'matCap' ),
 				num: {
 					value: 1.0 - this.offset
 				},
-				// New PBR-related uniforms
-				uMetalness: { value: 0.7 },    // Adjust for metallic look
-				uRoughness: { value: 0.2 },    // Lower = smoother
-				uGlossiness: { value: 0.8 },   // Higher = shinier
-				uReflection: { value: 0.6 },   // Higher = more reflective
 			} ),
 			side: THREE.DoubleSide
 		} );
@@ -83,6 +84,8 @@ export class LogoPart {
 		if (properties.reflection !== undefined) {
 			material.uniforms.uReflection.value = properties.reflection;
 		}
+
+		// material.uniforms.uCameraPosition.value.copy(camera.position);
 	}
 
 

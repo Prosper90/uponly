@@ -485,11 +485,35 @@ export class Baku extends THREE.Object3D {
 
 
 					console.log('Lets observe where we are', clip);
-					
+					this.animationClipNameList.forEach(name => {
+						if (name !== clip.name) {
+							const otherAction = this.animationActions[name];
+							if (otherAction.isRunning()) {
+								otherAction.stop();
+							}
+						}
+				
+						this.animator.animate(
+							'BakuWeight/03_Floating',
+							 1,
+							1.0, // Adjust this value for smoother weight transition
+							() => {
+								if (name !== clip.name && this.animationActions['03_Floating'].isRunning()) {
+									this.animationActions['03_Floating'].stop();
+								}
+							}
+						);
+					});			
+		
+					// Reset and play the floating animation
+					action.reset()
+					.setEffectiveTimeScale(1)
+					.setEffectiveWeight(1)
+					.play();
 					// Add the "BakuWeight/" prefix here too
 					// this.bakuWrap?.position.set(0, -0.74057440161705016, -0.010594895482063285);
-					this.animator.animate('BakuWeight/03_Floating', 1.0, 1.0);
-					this.animator.animate('BakuWeight/08_Shockwave', 1, 1.5);
+					// this.animator.animate('BakuWeight/03_Floating', 1.0, 1.0);
+					// this.animator.animate('BakuWeight/08_Shockwave', 1, 1.5);
 
 
 					this.jumping = false;

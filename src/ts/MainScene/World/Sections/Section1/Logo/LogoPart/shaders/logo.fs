@@ -1,29 +1,36 @@
 uniform vec3 uColor;
 uniform sampler2D uMatCapTex;
-uniform float uMetalness;    // New: control metallic look
-uniform float uRoughness;    // New: control surface smoothness
-uniform float uGlossiness;   // New: control shininess
-uniform float uReflection;   // New: control reflection strength
+uniform float uMetalness;    
+uniform float uRoughness;    
+uniform float uGlossiness;   
+uniform float uReflection;   
 
 varying vec3 vNormal;
 varying vec2 vUv;
+varying vec3 vViewPosition;
 
-void main(void) {
+void main() {
     vec3 normal = normalize(vNormal);
+    vec3 viewDir = normalize(vViewPosition);
     
-    // Adjust UV calculation with roughness
+    // Enhanced view-dependent UV calculation
     vec2 matCapUV = vec2(normal.x, normal.y) * (1.0 - uRoughness) * 0.95 * 0.5 + 0.5;
     vec3 matCapColor = texture2D(uMatCapTex, matCapUV).xyz;
     
-    // Add glossiness effect
-    float glossFactor = pow(max(normal.z, 0.0), uGlossiness * 50.0);
+    // Enhanced glossiness with view direction
+    float NdotV = max(dot(normal, viewDir), 0.0);
+    float glossFactor = pow(NdotV, uGlossiness * 50.0);
     
-    // Mix between base color and MatCap based on metalness and reflection
+    // Material mixing with enhanced depth
     vec3 baseColor = mix(uColor, matCapColor, uMetalness);
     vec3 finalColor = mix(baseColor, matCapColor, uReflection);
     
-    // Add glossiness highlight
-    finalColor = mix(finalColor, vec3(1.0), glossFactor);
+    // Add glossiness highlight with depth enhancement
+    finalColor = mix(finalColor, vec3(1.0), glossFactor * (1.0 - uRoughness));
+    
+    // Subtle depth enhancement
+    float depth = (1.0 - NdotV) * 0.2;
+    finalColor = mix(finalColor, finalColor * 0.8, depth);
 
     gl_FragColor = vec4(finalColor, 1.0);
 }
