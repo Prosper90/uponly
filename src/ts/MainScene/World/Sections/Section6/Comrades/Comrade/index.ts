@@ -31,7 +31,7 @@ export class Comrade {
 		let clonedRoot = SkeletonUtils.clone( origin );
 		clonedRoot.position.set( 0, 0, 0 );
 
-		let clonedBone = clonedRoot.getObjectByName( "ComradeBone" ) as THREE.SkinnedMesh;
+		let clonedBone = clonedRoot.getObjectByName( "Bone" ) as THREE.SkinnedMesh;
 		clonedBone.position.set( 0, - 0.5, 0 );
 
 		let clonedMesh = clonedRoot.getObjectByName( "Comrades_Origin" ) as THREE.SkinnedMesh;
@@ -40,13 +40,13 @@ export class Comrade {
 			Texture
 		-------------------------------*/
 
-		// let loader = new THREE.TextureLoader();
+		let loader = new THREE.TextureLoader();
 
-		// loader.load( './assets/textures/baku/baku_' + colorNum + '.jpg', ( tex ) => {
+		loader.load( './assets/textures/baku/baku_' + colorNum + '.jpg', ( tex ) => {
 
-		// 	this.commonUniforms.uTex.value = tex;
+			this.commonUniforms.uTex.value = tex;
 
-		// } );
+		} );
 
 		/*-------------------------------
 			Animtor

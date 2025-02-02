@@ -48,6 +48,7 @@ export class Lights extends EventEmitter {
 				vertexShader: wireVert,
 				fragmentShader: wireFrag,
 				uniforms: ORE.UniformsLib.mergeUniforms( THREE.UniformsUtils.clone( THREE.UniformsLib.lights ), this.commonUniforms, {
+					lightIntensity: { value: 0.5 } // Add this to control overall light intensity
 				} ),
 				transparent: true,
 				lights: true,

@@ -155,7 +155,7 @@ export class World extends THREE.Object3D {
 			Intro
 		-------------------------------*/
 
-		this.intro = new Intro( renderer, this.scene.getObjectByName( 'Intro' ) as THREE.Object3D, this.commonUniforms );
+		this.intro = new Intro( renderer,  this.commonUniforms );
 
 		/*-------------------------------
 			Baku
@@ -165,31 +165,11 @@ export class World extends THREE.Object3D {
 		this.add( this.baku );
 
 		window.setInterval( () => {
-			if(this.section1.sectionVisibility) {
-				this.baku.changeSectionAction('section_1');
-				// Reset to default position and rotation		
-			} else if ( this.section2.sectionVisibility ) {
-				this.baku.changeSectionAction('section_2');
-				// Reset to default position and rotation
-		
-			} else if ( this.section3.sectionVisibility ) {
-				console.log('Section 3 slow');
-				
-				// this.baku.changeSectionAction('section_3');
-		        // this.baku.changeAngleandPosition([['x', 39]], [0, -0.6, 0]);
-			} else if ( this.section4.sectionVisibility ) {
-				this.baku.changeSectionAction('section_4');
-				// Reset to default position and rotation
-		
-			} else if ( this.section5.sectionVisibility ) {
-				this.baku.changeSectionAction('section_5');
-				// Reset to default position and rotation
-		
-			} else if ( this.section6.sectionVisibility ) {
-				this.baku.changeAngleandPosition([['x', 40]]);
-				this.baku.changeSectionAction('section_6');
-				// Reset to default position and rotation
-				// this.baku.changeAngleandPosition([0, 'x'], [0, 0, 0]);
+
+			if ( this.section4.sectionVisibility ) {
+
+				this.baku.jump();
+
 			}
 			
 		}, 3500 );
@@ -318,7 +298,7 @@ export class World extends THREE.Object3D {
 
 		// baku
 
-		this.baku.changeRotateSpeed( section.bakuParam.rotateSpeed );
+		// this.baku.changeRotateSpeed( section.bakuParam.rotateSpeed );
 		this.baku.changeMaterial( section.bakuParam.materialType );
 
 		// if(section.sectionName === 'section_3') {
@@ -326,11 +306,10 @@ export class World extends THREE.Object3D {
 		// 	this.baku.changeSectionAction('section_3', '03_Floating');
 		// 	this.baku.changeAngleandPosition([['x', 37]], [0, -0.5, 0]);
 		// } 
-		if(section.sectionName === 'section_3') {
-			this.baku.changeSectionAction( section.sectionName, 'pre_section_3');
-		  } else {
-			this.baku.changeSectionAction( section.sectionName );
+        if(section.sectionName === 'section_6') {
+			this.baku.changeAngleandPosition([['x', 65]]);
 		}
+		this.baku.changeSectionAction( section.sectionName );
 		
 		
 		this.baku.resetToInitialPosition(section.sectionName);

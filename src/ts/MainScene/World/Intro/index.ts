@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import * as ORE from 'ore-three';
-import { Logo } from './Logo';
+// import { Logo } from './Logo';
 import { CameraController } from './CameraController';
-import { IntroGrid } from './IntroGrid';
-import { IntroText } from './IntroText';
+// import { IntroGrid } from './IntroGrid';
+// import { IntroText } from './IntroText';
 import EventEmitter from 'wolfy87-eventemitter';
 import { IntroUI } from './IntroUI';
 
@@ -22,18 +22,18 @@ export class Intro extends EventEmitter {
 
 	public renderTarget: THREE.WebGLRenderTarget;
 
-	private logo: Logo;
-	private text1: IntroText;
-	private text2: IntroText;
-	private text3: IntroText;
+	// private logo: Logo;
+	// private text1: IntroText;
+	// private text2: IntroText;
+	// private text3: IntroText;
 
 	private dirLight: THREE.DirectionalLight;
-	private aLight: THREE.AmbientLight;
+	// private aLight: THREE.AmbientLight;
 
 	public finished: boolean = false;
 	private layoutControllerList: ORE.LayoutController[] = [];
 
-	constructor( renderer: THREE.WebGLRenderer, introObj: THREE.Object3D, parentUniforms: ORE.Uniforms ) {
+	constructor( renderer: THREE.WebGLRenderer,  parentUniforms: ORE.Uniforms ) {
 
 		super();
 
@@ -48,7 +48,7 @@ export class Intro extends EventEmitter {
 
 		this.renderTarget = new THREE.WebGLRenderTarget( 1, 1 );
 
-		this.scene.add( introObj );
+		// this.scene.add( introObj );
 
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( parentUniforms, {
 		} );
@@ -64,9 +64,9 @@ export class Intro extends EventEmitter {
 			this.skip();
 			this.emitEvent( 'finish' );
 
-			this.text1.swithVisibility( false );
-			this.text2.swithVisibility( false );
-			this.text3.swithVisibility( false );
+			// this.text1.swithVisibility( false );
+			// this.text2.swithVisibility( false );
+			// this.text3.swithVisibility( false );
 
 		} );
 
@@ -97,20 +97,20 @@ export class Intro extends EventEmitter {
 			Logo
 		-------------------------------*/
 
-		this.logo = new Logo( this.scene.getObjectByName( 'Logo' ) as THREE.Mesh, this.commonUniforms );
-		this.logo.addListener( 'showImaging', () => {
+		// this.logo = new Logo( this.scene.getObjectByName( 'Logo' ) as THREE.Mesh, this.commonUniforms );
+		// this.logo.addListener( 'showImaging', () => {
 
-			this.animator.animate( 'introLightIntensity', 1, 10 );
+		// 	this.animator.animate( 'introLightIntensity', 1, 10 );
 
-		});
+		// });
 
 		/*-------------------------------
 			Text1
 		-------------------------------*/
 
-		this.text1 = new IntroText( this.scene.getObjectByName( 'Text1' ) as THREE.Object3D, this.commonUniforms, 'アイデアとテクノロジーで、世界をもっとハッピーでワクワクしたものに。', document.querySelector( '.intro-text-item.introText1' ) as HTMLElement );
-		this.text2 = new IntroText( this.scene.getObjectByName( 'Text2' ) as THREE.Object3D, this.commonUniforms, '理想を現実に。ジュニは、そんな思いで全員でものづくりを行っています。', document.querySelector( '.intro-text-item.introText2' ) as HTMLElement );
-		this.text3 = new IntroText( this.scene.getObjectByName( 'Text3' ) as THREE.Object3D, this.commonUniforms, 'そんなジュニのものづくりの理想を、少し、覗いてみませんか？', document.querySelector( '.intro-text-item.introText3' ) as HTMLElement );
+		// this.text1 = new IntroText( this.scene.getObjectByName( 'Text1' ) as THREE.Object3D, this.commonUniforms, 'アイデアとテクノロジーで、世界をもっとハッピーでワクワクしたものに。', document.querySelector( '.intro-text-item.introText1' ) as HTMLElement );
+		// this.text2 = new IntroText( this.scene.getObjectByName( 'Text2' ) as THREE.Object3D, this.commonUniforms, '理想を現実に。ジュニは、そんな思いで全員でものづくりを行っています。', document.querySelector( '.intro-text-item.introText2' ) as HTMLElement );
+		// this.text3 = new IntroText( this.scene.getObjectByName( 'Text3' ) as THREE.Object3D, this.commonUniforms, 'そんなジュニのものづくりの理想を、少し、覗いてみませんか？', document.querySelector( '.intro-text-item.introText3' ) as HTMLElement );
 
 		/*-------------------------------
 			Scene
@@ -118,18 +118,19 @@ export class Intro extends EventEmitter {
 
 		this.dirLight = new THREE.DirectionalLight();
 		this.dirLight.position.set( 1, 1, - 0.0 );
-		this.scene.add( this.dirLight );
+		// this.scene.add( this.dirLight );
 
-		this.aLight = new THREE.AmbientLight();
-		this.scene.add( this.aLight );
+		// this.aLight = new THREE.AmbientLight();
+		// // this.scene.add( this.aLight );
 
-		let introGrid = new IntroGrid( ORE.UniformsLib.mergeUniforms( this.commonUniforms,
-			{
-				uVisibility: this.animator.getVariableObject( 'introLightIntensity' )!
-			}
-		) );
-		introGrid.position.z = - 1.0;
-		this.scene.add( introGrid );
+		// let introGrid = new IntroGrid( ORE.UniformsLib.mergeUniforms( this.commonUniforms,
+		// 	{
+		// 		uVisibility: this.animator.getVariableObject( 'introLightIntensity' )!
+		// 	}
+		// ) );
+		// introGrid.position.z = - 1.0;
+		// this.scene.add( introGrid );
+		
 
 		/*-------------------------------
 			CameraController
@@ -141,28 +142,28 @@ export class Intro extends EventEmitter {
 			Layout
 		-------------------------------*/
 
-		this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Wave_Left' )!, {
-			position: new THREE.Vector3( 1.7, 0.4, 0.0 )
-		} ) );
+		// this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Wave_Left' )!, {
+		// 	position: new THREE.Vector3( 1.7, 0.4, 0.0 )
+		// } ) );
 
-		this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Cone' )!, {
-			position: new THREE.Vector3( 1.5, - 0.2, 0.0 ),
-			scale: 0.8
-		} ) );
+		// this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Cone' )!, {
+		// 	position: new THREE.Vector3( 1.5, - 0.2, 0.0 ),
+		// 	scale: 0.8
+		// } ) );
 
-		this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Wave_Right' )!, {
-			position: new THREE.Vector3( - 1.5, 0.0, 0.0 ),
-		} ) );
+		// this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Wave_Right' )!, {
+		// 	position: new THREE.Vector3( - 1.5, 0.0, 0.0 ),
+		// } ) );
 
-		this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Torus' )!, {
-			position: new THREE.Vector3( - 1.5, - 0.5, 0.0 ),
-			scale: 0.6
-		} ) );
+		// this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Torus' )!, {
+		// 	position: new THREE.Vector3( - 1.5, - 0.5, 0.0 ),
+		// 	scale: 0.6
+		// } ) );
 
-		this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Cube' )!, {
-			position: new THREE.Vector3( - 1.0, - 0.5, 0.0 ),
-			scale: 0.6
-		} ) );
+		// this.layoutControllerList.push( new ORE.LayoutController( this.scene.getObjectByName( 'Cube' )!, {
+		// 	position: new THREE.Vector3( - 1.0, - 0.5, 0.0 ),
+		// 	scale: 0.6
+		// } ) );
 
 	}
 
@@ -176,14 +177,14 @@ export class Intro extends EventEmitter {
 
 		if ( this.finished ) return;
 
-		this.logo.update( deltaTime );
+		// this.logo.update( deltaTime );
 
 		this.cameraController.update( deltaTime );
 
 		let lightIntensity = this.animator.get<number>( 'introLightIntensity' ) || 0;
 
 		this.dirLight.intensity = 0.5 * lightIntensity;
-		this.aLight.intensity = 0.05 * lightIntensity;
+		// this.aLight.intensity = 0.05 * lightIntensity;
 
 		this.dirLight.position.y = 1 - ( 1.0 - lightIntensity ) * 2.0;
 
@@ -191,6 +192,30 @@ export class Intro extends EventEmitter {
 		this.renderer.setRenderTarget( this.renderTarget );
 		this.renderer.render( this.scene, this.camera );
 		this.renderer.setRenderTarget( rt );
+
+	}
+
+
+	public async start() {
+
+		setTimeout( () => {
+
+			// window.subtitles.show( this.text, 1, 2.0 );
+
+		}, 500 );
+
+
+		await new Promise( ( r ) => {
+
+			setTimeout( () => {
+
+				r( null );
+
+			}, 2000 );
+
+		} );
+
+
 
 	}
 
@@ -204,17 +229,17 @@ export class Intro extends EventEmitter {
 
 				this.ui.switchSkipVisibility( true );
 
-				await this.logo.start();
+				// await this.logo.start();
 
 				if ( this.finished ) return;
 
 				this.emitEvent( 'showImaging' );
 
-				await this.text1.start();
+				await this.start();
 
 				if ( this.finished ) return;
 
-				await this.text2.start();
+				await this.start();
 
 				if ( this.finished ) return;
 
@@ -224,7 +249,7 @@ export class Intro extends EventEmitter {
 
 				}, 1000 );
 
-				await this.text3.start( true );
+				await this.start();
 
 				this.finished = true;
 
@@ -246,9 +271,9 @@ export class Intro extends EventEmitter {
 
 		let isSP = info.size.windowSize.x <= 800;
 
-		this.text1.setEnable( ! isSP );
-		this.text2.setEnable( ! isSP );
-		this.text3.setEnable( ! isSP );
+		// this.text1.setEnable( ! isSP );
+		// this.text2.setEnable( ! isSP );
+		// this.text3.setEnable( ! isSP );
 
 		this.layoutControllerList.forEach( item => {
 
@@ -262,7 +287,7 @@ export class Intro extends EventEmitter {
 
 		this.finished = true;
 
-		this.logo.cancel();
+		// this.logo.cancel();
 
 	}
 

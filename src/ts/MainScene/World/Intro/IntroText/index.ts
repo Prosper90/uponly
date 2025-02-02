@@ -76,11 +76,11 @@ export class IntroText {
 
 		setTimeout( () => {
 
-			window.subtitles.show( this.text, 1, 2.0 );
+			// window.subtitles.show( this.text, 1, 2.0 );
 
 		}, 500 );
 
-		await this.swithVisibility( true );
+		await this.swithVisibility( false );
 
 		await new Promise( ( r ) => {
 

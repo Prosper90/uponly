@@ -31,12 +31,15 @@ export class Baku extends THREE.Object3D {
 	//bakuWrap
 	private bakuWrap?: THREE.Object3D
 
+	//jumping
+	private jumping: boolean = false;
+
     // Animation mapping
     private readonly SECTION_ANIMATIONS: { [key: string]: string } = {
         'section_1': '01_Walk',
         'section_2': '01_Walk',
-        'section_3': '05_Hero',
-        'section_4': '07_Idle',
+        'section_3': '03_Floating',
+        'section_4': '05_Hero',
         'section_5': '03_Floating',
         'section_6': '10_Flying',
 		'pre_section_3': '03_Floating',
@@ -106,6 +109,36 @@ export class Baku extends THREE.Object3D {
 			const loader = new GLTFLoader(this.manager);
 			loader.load('./assets/scene/SM_Character_Final.glb', (gltf) => {
 				this.bakuWrap = gltf.scene.getObjectByName("Main_Rig") as THREE.Object3D;
+				let bakuSing = gltf.scene.getObjectByName("Mesh003_7") as THREE.Mesh;
+
+				let loaderText = new THREE.TextureLoader();
+
+				loaderText.load('./assets/textures/music.png', (tex) => {
+					// Create a new material with the texture if it doesn't exist
+					if (!bakuSing.material) {
+						bakuSing.material = new THREE.MeshStandardMaterial();
+					}
+					
+					// If the material is an array, apply to all materials
+					if (Array.isArray(bakuSing.material)) {
+						bakuSing.material.forEach(mat => {
+							if (mat instanceof THREE.MeshStandardMaterial || 
+								mat instanceof THREE.MeshBasicMaterial ||
+								mat instanceof THREE.MeshPhongMaterial) {
+								mat.map = tex;
+								mat.needsUpdate = true;
+							}
+						});
+					} else {
+						// Apply to single material with proper type casting
+						if (bakuSing.material instanceof THREE.MeshStandardMaterial || 
+							bakuSing.material instanceof THREE.MeshBasicMaterial ||
+							bakuSing.material instanceof THREE.MeshPhongMaterial) {
+							bakuSing.material.map = tex;
+							bakuSing.material.needsUpdate = true;
+						}
+					}
+				});
 
 				// Scale down the model
 				this.bakuWrap.scale.set(0.3, 0.3, 0.3);
@@ -214,7 +247,6 @@ export class Baku extends THREE.Object3D {
 
 
 	public changeSectionAction(sectionName: string, pre?: string) {
-		console.log(sectionName, "checking sectionName");
 	
 		const animationName = pre ? this.SECTION_ANIMATIONS[pre] : this.SECTION_ANIMATIONS[sectionName];
 		if (!animationName || !this.animationActions[animationName]) {
@@ -222,7 +254,6 @@ export class Baku extends THREE.Object3D {
 			return;
 		}
 	
-		console.log(animationName, "checking to use");
 	
 		const action = this.animationActions[animationName];
 		const lastSectionAction = this.playingSectionAction;
@@ -230,7 +261,6 @@ export class Baku extends THREE.Object3D {
 	
 		// If there's a pre-animation specified
 		if (sectionName === 'section_3' && pre === 'pre_section_3') {
-			console.log("Starting floating animation hhhj");
 
 
 
@@ -266,9 +296,7 @@ export class Baku extends THREE.Object3D {
 	
 			// Use setTimeout to trigger the walking animation after floating completes
 			setTimeout(() => {
-				action.stop();
-				console.log("Transitioning to walking animation");
-	
+				action.stop();	
 				// Trigger the walking animation
 				// this.changeAngleandPosition([['x', 39]], [0, -0.6, 0]);
 				this.changeSectionAction(sectionName);
@@ -337,19 +365,19 @@ export class Baku extends THREE.Object3D {
         this.animator.animate('bakuRimLight', type === 'dark' ? 0.0 : 1.0);
     }
 
-    public changeRotateSpeed(speed: number) {
-        if (speed === 0.0) {
-            this.animator.setValue('bakuRotateSpeed', 0);
-            this.animator.setValue(
-                'bakuRotateValue',
-                (this.container.rotation.z + Math.PI) % (Math.PI * 2.0) - Math.PI
-            );
-            this.animator.animate('bakuRotateValue', 0);
-            return;
-        }
+    // public changeRotateSpeed(speed: number) {
+    //     if (speed === 0.0) {
+    //         this.animator.setValue('bakuRotateSpeed', 0);
+    //         this.animator.setValue(
+    //             'bakuRotateValue',
+    //             (this.container.rotation.z + Math.PI) % (Math.PI * 2.0) - Math.PI
+    //         );
+    //         this.animator.animate('bakuRotateValue', 0);
+    //         return;
+    //     }
 
-        this.animator.animate('bakuRotateSpeed', speed);
-    }
+    //     this.animator.animate('bakuRotateSpeed', speed);
+    // }
 
     public show(duration: number = 1.0) {
         this.animator.animate('bakuIntroRotate', 0, duration);
@@ -426,5 +454,63 @@ export class Baku extends THREE.Object3D {
 			this.bakuWrap.position.set(position[0], position[1], position[2]);
 		}
 		// console.log(this.bakuWrap.position, "checking the position two update");
+	}
+
+
+
+
+	public jump() {
+
+		if ( this.jumping ) return;
+
+		this.jumping = true;
+
+		let action = this.animationActions["05_Hero"];
+		action.reset();
+		action.loop = THREE.LoopOnce;
+		action.play();
+
+		// Add the "BakuWeight/" prefix to match how they were created
+		this.animator.animate('BakuWeight/03_Floating', 1, 2);
+		this.animator.animate('BakuWeight/08_Shockwave', 1.0, 0.1);
+
+		if ( this.animationMixer ) {
+
+			let onFinished = ( e: any ) => {
+
+				let action = e.action as THREE.AnimationAction;
+				let clip = action.getClip();
+
+				if ( clip.name == '05_Hero' ) {
+
+
+					console.log('Lets observe where we are', clip);
+					
+					// Add the "BakuWeight/" prefix here too
+					// this.bakuWrap?.position.set(0, -0.74057440161705016, -0.010594895482063285);
+					this.animator.animate('BakuWeight/03_Floating', 1.0, 1.0);
+					this.animator.animate('BakuWeight/08_Shockwave', 1, 1.5);
+
+
+					this.jumping = false;
+
+					if ( this.animationMixer ) {
+
+						this.animationMixer.addEventListener( 'finished', onFinished );
+
+					}
+
+				}
+
+			};
+
+			this.animationMixer.addEventListener( 'finished', onFinished );
+
+		}
+
+		this.dispatchEvent( {
+			type: 'jump'
+		} );
+
 	}
 }

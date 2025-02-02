@@ -156,6 +156,7 @@ export class MainScene extends ORE.BaseLayer {
 		this.gManager.assetManager.load( { assets: [
 			{ name: 'commonScene', path: './assets/scene/common.glb', type: "gltf", timing: 'must' },
 			{ name: 'logo', path: './assets/textures/junni_logo.png', type: 'tex', timing: 'must' },
+			{ name: 'music', path: './assets/textures/music.png', type: 'tex', timing: 'must' },
 			{ name: 'sec2BGText', path: './assets/textures/sec2-bg-text.png', type: 'tex', timing: 'must', onLoad( value: THREE.Texture ) {
 
 				value.wrapS = THREE.RepeatWrapping;

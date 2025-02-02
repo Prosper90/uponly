@@ -162,6 +162,8 @@ export class Section4 extends Section {
 			Peoples
 		-------------------------------*/
 
+		//so if I run loader her and pass candles here, things might work ?
+
 		this.peoples = new Peoples( this.renderer, 26, this.commonUniforms, ground.getObjectByName( 'Avoids' ) as THREE.Object3D );
 		this.peoples.switchVisibility( this.sectionVisibility, 2 );
 		this.peoples.position.y += 0.5;
