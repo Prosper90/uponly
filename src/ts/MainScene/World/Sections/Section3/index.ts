@@ -34,7 +34,7 @@ export class Section3 extends Section {
 
 		this.renderer = renderer;
 		this.elm = document.querySelector( '.section3' ) as HTMLElement;
-		this.ppParam.bloomBrightness = 1.5;
+		this.ppParam.bloomBrightness = 0.5;
 		this.bakuParam.rotateSpeed = 0.0;
 		this.cameraSPFovWeight = 18;
 
@@ -43,7 +43,7 @@ export class Section3 extends Section {
 		-------------------------------*/
 
 		this.light2Data = {
-			intensity: 1,
+			intensity: 0.3,
 			position: new THREE.Vector3( - 3.0, - 11.0, - 3.0 ),
 			targetPosition: new THREE.Vector3( 0, - 11.0, 0 ),
 		};

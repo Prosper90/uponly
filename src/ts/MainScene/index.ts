@@ -28,7 +28,7 @@ export class MainScene extends ORE.BaseLayer {
 	private subtitles: Subtitles;
 	private header: Header;
 	private footer: Footer;
-	private loading: Loading;
+	// private loading: Loading;
 
 	// wheel
 
@@ -52,6 +52,8 @@ export class MainScene extends ORE.BaseLayer {
 
 		super( param );
 
+		// Add this line early in the constructor
+		document.querySelector('.loading-screen')?.classList.add('visible');
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			uTimeMod: {
 				value: 0
@@ -143,7 +145,7 @@ export class MainScene extends ORE.BaseLayer {
 			Loading
 		-------------------------------*/
 
-		this.loading = new Loading();
+		// this.loading = new Loading();
 
 	}
 
@@ -280,11 +282,11 @@ export class MainScene extends ORE.BaseLayer {
 			this.scene.add( this.world );
 
 			this.world.changeSection( 0 );
-			this.world.addEventListener( 'load', () => {
+			// this.world.addEventListener( 'load', () => {
 
-				this.loading.switchVisibility( false );
+			// 	this.loading.switchVisibility( false );
 
-			} );
+			// } );
 
 			this.world.intro.addListener( 'showImaging', () => {
 

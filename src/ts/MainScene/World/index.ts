@@ -199,7 +199,7 @@ export class World extends THREE.Object3D {
 
 		this.section1 = new Section1( this.manager, this.commonUniforms );
 		this.add( this.section1 );
-		this.section1.wall.setTex( this.intro.renderTarget.texture );
+		// this.section1.wall.setTex( this.intro.renderTarget.texture );
 		this.sections.push( this.section1 );
 
 		this.section2 = new Section2( this.manager, this.commonUniforms );
@@ -306,9 +306,28 @@ export class World extends THREE.Object3D {
 		// 	this.baku.changeSectionAction('section_3', '03_Floating');
 		// 	this.baku.changeAngleandPosition([['x', 37]], [0, -0.5, 0]);
 		// } 
+		if(section.sectionName === 'section_2') {
+			this.baku.changeAngleandPosition([['x', 35]]);
+		}
         if(section.sectionName === 'section_6') {
 			this.baku.changeAngleandPosition([['x', 65]]);
 		}
+		if(section.sectionName === 'section_3') {
+			// Set very low light intensity
+			this.lights.setLightIntensities(0.5);
+			
+			// Set dark background
+			this.bg.setDarkMode(true);
+			
+			// If you have any other scene lights, you might want to adjust them here
+			if (section.light1Data) {
+				section.light1Data.intensity = 0.5;
+			}
+			if (section.light2Data) {
+				section.light2Data.intensity = 0.5;
+			}
+		}
+
 		this.baku.changeSectionAction( section.sectionName );
 		
 		
@@ -431,6 +450,7 @@ export class World extends THREE.Object3D {
 		if ( this.splashed ) return;
 
 		this.splashed = true;
+		document.querySelector('.loading-screen')?.classList.remove('visible');
 		this.intro.skip();
 		this.section1.wall.dispose();
 		this.section1.splash();

@@ -30,6 +30,9 @@ export class Comrade {
 
 		let clonedRoot = SkeletonUtils.clone( origin );
 		clonedRoot.position.set( 0, 0, 0 );
+        // Add rotation to clonedRoot
+        clonedRoot.rotation.x = Math.PI / 2; // 45 degrees rotation around X axis
+
 
 		let clonedBone = clonedRoot.getObjectByName( "Bone" ) as THREE.SkinnedMesh;
 		clonedBone.position.set( 0, - 0.5, 0 );
@@ -42,7 +45,7 @@ export class Comrade {
 
 		let loader = new THREE.TextureLoader();
 
-		loader.load( './assets/textures/baku/baku_' + colorNum + '.jpg', ( tex ) => {
+		loader.load( './assets/textures/baku/baku_' + 1 + '.jpg', ( tex ) => {
 
 			this.commonUniforms.uTex.value = tex;
 

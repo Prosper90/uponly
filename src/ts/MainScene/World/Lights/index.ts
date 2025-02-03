@@ -183,4 +183,9 @@ export class Lights {
 
 	}
 
+	public setLightIntensities(intensity: number) {
+		this.animator.animate('light1Intensity', intensity);
+		this.animator.animate('light2Intensity', intensity);
+	}
+
 }

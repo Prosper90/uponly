@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import * as ORE from 'ore-three';
-// import { Logo } from './Logo';
 import { CameraController } from './CameraController';
 // import { IntroGrid } from './IntroGrid';
 // import { IntroText } from './IntroText';
@@ -22,7 +21,6 @@ export class Intro extends EventEmitter {
 
 	public renderTarget: THREE.WebGLRenderTarget;
 
-	// private logo: Logo;
 	// private text1: IntroText;
 	// private text2: IntroText;
 	// private text3: IntroText;
@@ -97,16 +95,12 @@ export class Intro extends EventEmitter {
 			Logo
 		-------------------------------*/
 
-		// this.logo = new Logo( this.scene.getObjectByName( 'Logo' ) as THREE.Mesh, this.commonUniforms );
-		// this.logo.addListener( 'showImaging', () => {
 
-		// 	this.animator.animate( 'introLightIntensity', 1, 10 );
-
-		// });
 
 		/*-------------------------------
 			Text1
 		-------------------------------*/
+		// this.text1 = new IntroText( this.scene.getObjectByName( 'Text1' ) as THREE.Object3D, this.commonUniforms, 'アイデアとテクノロジーで、世界をもっとハッピーでワクワクしたものに。', document.querySelector( '.intro-text-item.introText1' ) as HTMLElement );
 
 		// this.text1 = new IntroText( this.scene.getObjectByName( 'Text1' ) as THREE.Object3D, this.commonUniforms, 'アイデアとテクノロジーで、世界をもっとハッピーでワクワクしたものに。', document.querySelector( '.intro-text-item.introText1' ) as HTMLElement );
 		// this.text2 = new IntroText( this.scene.getObjectByName( 'Text2' ) as THREE.Object3D, this.commonUniforms, '理想を現実に。ジュニは、そんな思いで全員でものづくりを行っています。', document.querySelector( '.intro-text-item.introText2' ) as HTMLElement );
@@ -211,7 +205,7 @@ export class Intro extends EventEmitter {
 
 				r( null );
 
-			}, 2000 );
+			}, 750 );
 
 		} );
 
@@ -227,9 +221,19 @@ export class Intro extends EventEmitter {
 
 				if ( this.finished ) return;
 
-				this.ui.switchSkipVisibility( true );
+				// this.ui.switchSkipVisibility( true );
 
-				// await this.logo.start();
+				// Show loading screen with logo and Enter button
+				document.querySelector('.loading-screen')?.classList.add('visible');
+				
+				// Add click handler for skip button
+				document.querySelector('.intro-skip')?.addEventListener('click', () => {
+					this.skip();
+					this.emitEvent('finish');
+					document.querySelector('.loading-screen')?.classList.remove('visible');
+				});
+
+                await new Promise(resolve => setTimeout(resolve, 800));
 
 				if ( this.finished ) return;
 
@@ -288,7 +292,7 @@ export class Intro extends EventEmitter {
 		this.finished = true;
 
 		// this.logo.cancel();
-
+		document.querySelector('.loading-screen')?.classList.remove('visible');
 	}
 
 }

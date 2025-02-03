@@ -168,9 +168,19 @@ export class DrawTrail extends THREE.Mesh {
 		this.childrenWrapper.add( this.pencil );
 
 		this.pointer = new Sec1Pointer( this.assets.getObjectByName( 'Candle' ) as THREE.Mesh, this.commonUniforms );
-		this.childrenWrapper.add( this.pointer.mesh );
 
+		this.childrenWrapper.add( this.pointer.mesh );
+		// Load texture after pointer is created
+		this.loadPointerTexture();
 	}
+
+
+	private loadPointerTexture() {
+        const loader = new THREE.TextureLoader();
+        loader.load('./assets/textures/baku/baku_1.jpg', (texture) => {
+            this.pointer.updateTexture(texture);
+        });
+    }
 
 	public setSceneTex( texture: THREE.Texture ) {
 

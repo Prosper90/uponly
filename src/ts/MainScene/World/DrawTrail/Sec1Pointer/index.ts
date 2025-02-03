@@ -51,4 +51,11 @@ export class Sec1Pointer {
 
 	}
 
+    // Add a method to update the texture
+    public updateTexture(texture: THREE.Texture) {
+        if (this.commonUniforms.uTex) {
+            this.commonUniforms.uTex.value = texture;
+        }
+    }	
+
 }
