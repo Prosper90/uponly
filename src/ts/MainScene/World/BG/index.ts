@@ -59,7 +59,7 @@ export class BG extends THREE.Mesh {
 
 	public setDarkMode(dark: boolean) {
 		let mat = this.material as THREE.ShaderMaterial;
-		mat.uniforms.uDarkMode = { value: dark ? 5.0 : 0.0 };
+		mat.uniforms.uDarkMode = { value: dark ? 200.0 : 0.0 };
 	}
 
 }
